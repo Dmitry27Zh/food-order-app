@@ -1,9 +1,11 @@
+import Header from './components/Layout/header/header'
+
 function App() {
   return (
-    <div>
-      <h2>Стартовый Проект</h2>
-    </div>
-  );
+    <>
+      <Header />
+    </>
+  )
 }
 
-export default App;
+export default App

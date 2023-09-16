@@ -1,4 +1,5 @@
 import sushiImage from '../../../assets/sushi.jpg'
+import HeaderCartButton from '../headerCartButton/headerCartButton'
 import styles from './header.module.css'
 
 const Header = () => {
@@ -6,7 +7,7 @@ const Header = () => {
     <>
       <header className={styles.header}>
         <h1>Япона кухня</h1>
-        <button>Корзина</button>
+        <HeaderCartButton />
       </header>
       <div className={styles['main-image']}>
         <img src={sushiImage} alt="Блюда японской кухни" />

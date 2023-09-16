@@ -1,3 +1,5 @@
+import withCard from '../../UI/withCard'
+import Meal from '../meal/meal'
 import styles from './mealList.module.css'
 
 const DUMMY_MEALS = [
@@ -28,13 +30,16 @@ const DUMMY_MEALS = [
 ]
 
 const MealList = () => {
-  const mealList = DUMMY_MEALS.map(({ name, id }) => <li key={id}>{name}</li>)
+  const mealList = DUMMY_MEALS.map(({ id, ...rest }) => {
+    return (
+      <li key={id}>
+        <Meal {...rest} />
+      </li>
+    )
+  })
+  const MealListWithCard = withCard(() => <ul>{mealList}</ul>)
 
-  return (
-    <section className={styles.meals}>
-      <ul>{mealList}</ul>
-    </section>
-  )
+  return <section className={styles.meals}>{<MealListWithCard />}</section>
 }
 
 export default MealList

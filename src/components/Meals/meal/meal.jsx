@@ -2,7 +2,7 @@ import MealForm from '../mealForm/mealForm'
 import styles from './meal.module.css'
 
 const Meal = (props) => {
-  const { name, description, price } = props
+  const { id, name, description, price } = props
   const formattedPrice = `$${price.toFixed(2)}`
 
   return (
@@ -13,7 +13,7 @@ const Meal = (props) => {
         <div className={styles.price}>{formattedPrice}</div>
       </div>
       <div>
-        <MealForm />
+        <MealForm id={id} />
       </div>
     </div>
   )

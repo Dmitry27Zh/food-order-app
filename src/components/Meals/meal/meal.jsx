@@ -1,9 +1,17 @@
+import { useContext } from 'react'
 import MealForm from '../mealForm/mealForm'
 import styles from './meal.module.css'
+import CartContext from '../../../store/cart-context'
 
 const Meal = (props) => {
-  const { id, name, description, price } = props
+  const { meal } = props
+  const { id, name, description, price } = meal
+  const cartContext = useContext(CartContext)
   const formattedPrice = `$${price.toFixed(2)}`
+  const addHandler = (amount) => {
+    const item = { ...meal, amount }
+    cartContext.addItem(item)
+  }
 
   return (
     <div className={styles.meal}>
@@ -13,7 +21,7 @@ const Meal = (props) => {
         <div className={styles.price}>{formattedPrice}</div>
       </div>
       <div>
-        <MealForm id={id} />
+        <MealForm onAdd={addHandler} id={id} />
       </div>
     </div>
   )

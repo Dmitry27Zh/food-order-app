@@ -35,7 +35,7 @@ const MealList = () => {
 
     return (
       <li key={id}>
-        <Meal {...meal} />
+        <Meal meal={meal} />
       </li>
     )
   })

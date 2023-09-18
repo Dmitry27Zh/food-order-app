@@ -9,8 +9,7 @@ const Meal = (props) => {
   const cartContext = useContext(CartContext)
   const formattedPrice = `$${price.toFixed(2)}`
   const addHandler = (amount) => {
-    const item = { ...meal, amount }
-    cartContext.addItem(item)
+    cartContext.addItem(meal, amount)
   }
 
   return (

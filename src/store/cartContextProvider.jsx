@@ -6,41 +6,67 @@ const defaultCartState = {
   total: 0,
 }
 const cartReducer = (state, action) => {
+  let stateChanges = {}
+
   if (action.type === 'ADD') {
-    const existingItemIndex = state.items.findIndex((item) => item.id === action.item.id)
-    const isExist = existingItemIndex !== -1
-    const updatedItems = isExist
-      ? state.items.map((item, index) => {
-          if (index === existingItemIndex) {
-            item.amount += action.item.amount
-          }
+    const item = { ...action.meal, amount: action.amount }
+    const updatedItems = state.items.concat(item)
+    const updatedTotal = state.total + item.price * item.amount
 
-          return item
-        })
-      : state.items.concat(action.item)
-    const updatedTotal = state.total + action.item.price * action.item.amount
-
-    return {
+    stateChanges = {
       items: updatedItems,
       total: updatedTotal,
     }
   }
 
-  return defaultCartState
+  if (action.type === 'AMOUNT') {
+    const updatedItems = state.items.map((item) => {
+      if (item.id === action.meal.id) {
+        item.amount += action.amount
+      }
+
+      return item
+    })
+    const updatedTotal = state.total + action.meal.price * action.amount
+
+    stateChanges = {
+      items: updatedItems,
+      total: updatedTotal,
+    }
+  }
+
+  if (action.type === 'REMOVE') {
+    const updatedItems = state.items.filter((item) => item.id !== action.meal.id)
+    const updatedTotal = state.total - action.meal.price
+
+    stateChanges = {
+      items: updatedItems,
+      total: updatedTotal,
+    }
+  }
+
+  return { ...state, ...stateChanges }
 }
 
 const CartContextProvider = (props) => {
   const [cartState, dispatchCartState] = useReducer(cartReducer, defaultCartState)
-  const addItemHandler = (item) => {
+  const addItemHandler = (meal, amount) => {
+    const isExist = !!cartState.items.find((item) => item.id === meal.id)
+    const actionType = isExist ? 'AMOUNT' : 'ADD'
+
     dispatchCartState({
-      type: 'ADD',
-      item: item,
+      type: actionType,
+      meal,
+      amount,
     })
   }
-  const removeItemHandler = (id) => {
+  const removeItemHandler = (item, amount) => {
+    const actionType = item.amount <= amount ? 'REMOVE' : 'AMOUNT'
+
     dispatchCartState({
-      type: 'REMOVE',
-      id,
+      type: actionType,
+      meal: item,
+      amount: -amount,
     })
   }
 

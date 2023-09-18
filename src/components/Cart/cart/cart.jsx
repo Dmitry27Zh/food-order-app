@@ -3,21 +3,22 @@ import Modal from '../../UI/modal/modal'
 import styles from './cart.module.css'
 import CartContext from '../../../store/cart-context'
 import CartItem from '../cartItem/cartItem'
+import { roundToDecimalPlaces } from '../../../utils/numbers'
 
 const Cart = (props) => {
   const { onHide } = props
   const cartContext = useContext(CartContext)
-  const total = `$${cartContext.total.toFixed(2)}`
+  const total = `$${roundToDecimalPlaces(cartContext.total, 2)}`
   const addHandler = (item) => {
-    console.log('add one')
+    cartContext.addItem(item, 1)
   }
-  const removeHandler = (id) => {
-    console.log('remove one')
+  const removeHandler = (item) => {
+    cartContext.removeItem(item, 1)
   }
   const items = (
     <ul className={styles['cart-items']}>
       {cartContext.items.map((item) => (
-        <CartItem key={item.id} onAdd={() => addHandler(item)} onRemove={() => removeHandler(item.id)} {...item} />
+        <CartItem key={item.id} onAdd={() => addHandler(item)} onRemove={() => removeHandler(item)} {...item} />
       ))}
     </ul>
   )
